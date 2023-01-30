@@ -1,0 +1,15 @@
+body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    background-image: url('/img/5_background/layers/air.png');
+    background-repeat: no-repeat;
+}
+
+
+canvas {
+    background: black;
+    border-radius: 20px;
+}
