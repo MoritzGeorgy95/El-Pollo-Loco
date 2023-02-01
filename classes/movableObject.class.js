@@ -4,7 +4,7 @@ class MovableObject {
   width = 100;
   height = 100;
   img;
-  imgCache = {};
+  imgCache={};
   reversed= false;
 
   loadImage(path) {
@@ -23,4 +23,5 @@ class MovableObject {
       this.imgCache[path] = img;
     });
   }
+
 }

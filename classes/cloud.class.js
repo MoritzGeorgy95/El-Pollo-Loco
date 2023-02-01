@@ -3,7 +3,8 @@ class Cloud extends MovableObject{
         super().loadImage('img/5_background/layers/4_clouds/2.png');
         this.y= 0;
         this.x= 20;
-        this.width= 150;
+        this.width= 600;
+        this.height= 400;
     }
 
     incrementX() {
