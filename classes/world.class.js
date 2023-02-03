@@ -1,9 +1,10 @@
 class World {
   character = new Character();
   clouds = new Cloud();
-  audio_left = new Audio();
-  audio_right = new Audio();
+  // audio_left = new Audio();
+  // audio_right = new Audio();
   enemies = [new Chicken(), new Chicken(), new Chicken()];
+  
   background = new Background(
     [
       "img/5_background/layers/air.png",
@@ -19,14 +20,18 @@ class World {
     ]
   );
   healthbar= new Healthbar();
-  bottle= new Bottle();
+  bottlebar= new Bottlebar();
+  coinbar= new Coinbar();
+  bottle= new Bottle(this.character.x, this.character.y+100);
+  coins= [new Coin(), new Coin(),new Coin(),new Coin(),new Coin()];
+  collectableBottles= [new collectableBottle(),new collectableBottle(),new collectableBottle(),new collectableBottle(),new collectableBottle()];
   ctx;
   keyboard;
-
+  endboss= new Endboss(this.bottle);  
   constructor(canvas, keyboard) {
     this.canvas = canvas;
-    this.audio_left.src = "audio/walking.mp3";
-    this.audio_right.src = "audio/walking.mp3";
+    // this.audio_left.src = "audio/walking.mp3";
+    // this.audio_right.src = "audio/walking.mp3";
     this.keyboard = keyboard;
     this.ctx = canvas.getContext("2d");
     this.drawGame();
@@ -35,9 +40,10 @@ class World {
 
   setWorld() {
     this.character.world = this;
-    this.bottle.world = this;
-  }
-
+    this.bottle.world= this;
+    this.endboss.world= this;
+    
+    }
 
   drawBackground(arr, y) {
     arr.forEach((img)=> {
@@ -72,9 +78,42 @@ class World {
         enemy.width,
         enemy.height
       );
-      // enemy.incrementX();
       
     });
+  }
+
+  drawEndboss() {
+    this.ctx.drawImage(
+      this.endboss.img,
+      this.endboss.x,
+      this.endboss.y,
+      this.endboss.width,
+      this.endboss.height
+    ); 
+  }
+
+  drawCoins() {
+    this.coins.forEach((coin) => {
+      this.ctx.drawImage(
+        coin.img,
+        coin.x,
+        coin.y,
+        coin.width,
+        coin.height
+      );  
+  })
+}
+
+  drawCollectableBottles() {
+    this.collectableBottles.forEach((bottle) => {
+      this.ctx.drawImage(
+        bottle.img,
+        bottle.x,
+        bottle.y,
+        bottle.width,
+        bottle.height
+      );  
+  })
   }
 
   drawHealthBar() {
@@ -84,6 +123,26 @@ class World {
       this.healthbar.y,
       this.healthbar.width,
       this.healthbar.height
+    ); 
+  }
+
+  drawBottlebar() {
+    this.ctx.drawImage(
+      this.bottlebar.img,
+      this.bottlebar.x,
+      this.bottlebar.y,
+      this.bottlebar.width,
+      this.bottlebar.height
+    ); 
+  }
+
+  drawCoinbar() {
+    this.ctx.drawImage(
+      this.coinbar.img,
+      this.coinbar.x,
+      this.coinbar.y,
+      this.coinbar.width,
+      this.coinbar.height
     ); 
   }
 
@@ -111,25 +170,37 @@ class World {
     );
   }
 
-  drawBottle() {
-    this.ctx.drawImage(
-      this.bottle.img,
-      this.bottle.x,
-      this.bottle.y,
-      this.bottle.width,
-      this.bottle.height
-    );
-  }
+  drawbottle() {
+        if(this.bottle.isThrown) {
+          this.ctx.drawImage(
+            this.bottle.img,
+            this.bottle.x,
+            this.bottle.y,
+            this.bottle.width,
+            this.bottle.height
+          );
+        }
+    }
+  
 
   drawGame() {
     this.drawBackground(this.background.section1, 0);
     this.drawBackground(this.background.section2, 719);
     this.drawBackground(this.background.section1, 1438);
     this.drawBackground(this.background.section2, 2157);
+    this.drawBackground(this.background.section1, 2876);
+    this.drawBackground(this.background.section2, 3595);
+    this.drawBackground(this.background.section1, 4314);
+    this.drawBackground(this.background.section2, 5033);
     this.drawClouds();
     this.drawEnemies();
+    this.drawEndboss();
     this.drawHealthBar();
-    this.drawBottle();
+    this.drawBottlebar();
+    this.drawCoinbar();
+    this.drawbottle();
+    this.drawCoins();
+    this.drawCollectableBottles();
     
     if (this.character.reversed) {
      this.drawCharacterLeft();

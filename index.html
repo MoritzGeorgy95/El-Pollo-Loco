@@ -1,25 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>El Pollo Loco</title>
-    <link rel="icon" type="image/x-icon" href="./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body onload="init()">
-    <h1>El pollo loco</h1>
-    <canvas id="canvas" width="720" height="480"></canvas>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body onload="init()">
+    <div id="gameContainer"></div>
     <script src="classes/world.class.js"></script>
+    <script src="classes/statusbar.class.js"></script>
+    <script src="classes/healthbar.class.js"></script>
+    <script src="classes/bottlebar.class.js"></script>
+    <script src="classes/coinbar.class.js"></script>
     <script src="classes/background.class.js"></script>
     <script src="classes/movableObject.class.js"></script>
     <script src="classes/character.class.js"></script>
     <script src="classes/chicken.class.js"></script>
+    <script src="classes/endboss.class.js"></script>
     <script src="classes/cloud.class.js"></script>
     <script src="classes/keyboard.class.js"></script>
-    <script src="classes/healthbar.class.js"></script>
     <script src="classes/bottle.class.js"></script>
-    <script src="js/script.js"></script>
-</body>
+    <script src="classes/collectableObject.class.js"></script>
+    <script src="classes/coin.class.js"></script>
+    <script src="classes/collectableBottle.class.js"></script>
+    <script src="js/game.js"></script>
+  </body>
 </html>

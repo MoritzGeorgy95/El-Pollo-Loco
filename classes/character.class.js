@@ -1,3 +1,4 @@
+
 class Character extends MovableObject {
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
@@ -36,11 +37,38 @@ class Character extends MovableObject {
     "img/2_character_pepe/4_hurt/H-43.png",
   ];
 
+  IMAGES_STANDING = [
+    "img/2_character_pepe/1_idle/idle/I-1.png",
+    "img/2_character_pepe/1_idle/idle/I-2.png",
+    "img/2_character_pepe/1_idle/idle/I-3.png",
+    "img/2_character_pepe/1_idle/idle/I-4.png",
+    "img/2_character_pepe/1_idle/idle/I-5.png",
+    "img/2_character_pepe/1_idle/idle/I-6.png",
+    "img/2_character_pepe/1_idle/idle/I-7.png",
+    "img/2_character_pepe/1_idle/idle/I-8.png",
+    "img/2_character_pepe/1_idle/idle/I-9.png",
+    "img/2_character_pepe/1_idle/idle/I-10.png",
+    // "img/2_character_pepe/1_idle/long_idle/I-11.png",
+    // "img/2_character_pepe/1_idle/long_idle/I-12.png",
+    // "img/2_character_pepe/1_idle/long_idle/I-13.png",
+    // "img/2_character_pepe/1_idle/long_idle/I-14.png",
+    // "img/2_character_pepe/1_idle/long_idle/I-15.png",
+    // "img/2_character_pepe/1_idle/long_idle/I-16.png",
+    // "img/2_character_pepe/1_idle/long_idle/I-17.png",
+    // "img/2_character_pepe/1_idle/long_idle/I-18.png",
+    // "img/2_character_pepe/1_idle/long_idle/I-19.png",
+    // "img/2_character_pepe/1_idle/long_idle/I-20.png",
+  ];
+
   currentImg = 0;
   characterSpeed = 50;
   health = 100;
   isColliding;
   isDead;
+  isWalking;
+  isJumping;
+  coins = 0;
+  bottles = 0;
 
   constructor() {
     super().loadImage("img/2_character_pepe/1_idle/idle/I-1.png");
@@ -48,11 +76,14 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
-    this.y = 270 - this.height;
+    this.loadImages(this.IMAGES_STANDING);
     this.width = 200;
     this.height = 250;
+    this.y = 170;
     this.reversed = false;
     this.setGameLoop();
+    this.updateStatusBars();
+    this.animateStanding();
   }
 
   setGameLoop() {
@@ -62,35 +93,70 @@ class Character extends MovableObject {
       this.moveRight();
       this.moveLeft();
       this.jump();
-      this.collision();
+      this.collisionControl();
+
+      this.animateDeath();
+    }, 1000 / 15);
+  }
+
+  updateStatusBars() {
+    setInterval(() => {
       this.checkHealth();
-      this.animateDeath();}, 100);
+      this.checkBottles();
+      this.checkCoins();
+
+      this.animateDeath();
+    }, 1000 / 60);
   }
 
   checkHealth() {
-    if (this.health < 100 && this.health >= 80) {
-      this.world.healthbar.img.src = this.world.healthbar.images[1];
-    } else if (this.health < 80 && this.health >= 60) {
-      this.world.healthbar.img.src = this.world.healthbar.images[2];
-    } else if (this.health < 60 && this.health >= 40) {
-      this.world.healthbar.img.src = this.world.healthbar.images[3];
-    } else if (this.health < 40 && this.health >= 20) {
-      this.world.healthbar.img.src = this.world.healthbar.images[4];
-    } else if (this.health < 20 && this.health >= 0) {
-      this.world.healthbar.img.src = this.world.healthbar.images[5];
-    }
+    let index = Math.floor(this.health / 20);
     if (this.health <= 0) {
+      index = 0;
       this.isDead = true;
+    } else if (this.health >= 100) {
+      index = 5;
     }
+    let path = this.world.healthbar.images[index];
+    this.world.healthbar.img = this.world.healthbar.imgCache[path];
   }
 
-  animateDeath() {
-      if (this.isDead) {
-        let i = this.currentImg % this.IMAGES_DEAD.length;
-        let path = this.IMAGES_DEAD[i];
+  checkBottles() {
+    let index = this.bottles / 1;
+    let path = this.world.bottlebar.images[index];
+    this.world.bottlebar.img = this.world.bottlebar.imgCache[path];
+  }
+
+  checkCoins() {
+    let index = this.coins / 1;
+    let path = this.world.coinbar.images[index];
+    this.world.coinbar.img = this.world.coinbar.imgCache[path];
+  }
+
+  animateStanding() {
+    setInterval(() => {
+      if (
+        !this.isDead &&
+        !this.isColliding &&
+        !this.isWalking &&
+        !this.isJumping
+      ) {
+        let i = this.currentImg % this.IMAGES_STANDING.length;
+        let path = this.IMAGES_STANDING[i];
         this.img = this.imgCache[path];
         this.currentImg++;
       }
+    }, 200);
+  }
+
+  animateDeath() {
+    if (this.isDead) {
+      let i = this.currentImg % this.IMAGES_DEAD.length;
+      let path = this.IMAGES_DEAD[i];
+      this.img = this.imgCache[path];
+      this.currentImg++;
+      setTimeout(()=> {renderEndscreen();}, 1000)
+    }
   }
 
   animateHurt() {
@@ -100,71 +166,131 @@ class Character extends MovableObject {
     this.currentImg++;
   }
 
-  collision() {
-      this.world.enemies.forEach((enemy) => {
-        if (enemy.x <= this.x + this.width - 50 && enemy.x > this.x) {
-          this.isColliding = true;
-          this.health -= 1;
-          this.animateHurt();
-        } else {
-          this.isColliding = false;
-        }
-      });
+  collisionControl() {
+    this.checkCollisonWithEnemy();
+    this.checkCollisonWithCoins();
+    this.checkCollisonWithBottles();
   }
 
   animateWalk() {
-      if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-        let i = this.currentImg % this.IMAGES_WALKING.length;
-        let path = this.IMAGES_WALKING[i];
-        this.img = this.imgCache[path];
-        this.currentImg++;
-      }
+    if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+      let i = this.currentImg % this.IMAGES_WALKING.length;
+      let path = this.IMAGES_WALKING[i];
+      this.img = this.imgCache[path];
+      this.currentImg++;
+      this.isWalking = true;
+    } else {
+      this.isWalking = false;
+    }
   }
 
   animateJump() {
-      if (this.world.keyboard.SPACE) {
-        let i = this.currentImg % this.IMAGES_JUMPING.length;
-        let path = this.IMAGES_JUMPING[i];
-        this.img = this.imgCache[path];
-        this.currentImg++;
-      }
+    if (this.world.keyboard.SPACE) {
+      let i = this.currentImg % this.IMAGES_JUMPING.length;
+      let path = this.IMAGES_JUMPING[i];
+      this.img = this.imgCache[path];
+      this.currentImg++;
+      this.isJumping = true;
+    } else {
+      this.isJumping = false;
+    }
   }
 
   moveRight() {
-      if (this.world.keyboard.RIGHT && this.x + this.width <= 2400) {
-        this.world.ctx.translate(-30, 0);
-        this.world.audio_right.play();
-        this.x += 30;
-        this.world.healthbar.x += 30;
-        this.reversed = false;
-      } else {
-        this.world.audio_right.pause();
-      }
+    if (this.world.keyboard.RIGHT && this.x + this.width <= 4900) {
+      this.world.ctx.translate(-30, 0);
+      // this.world.audio_right.play();
+      this.x += 30;
+      this.world.bottle.x += 30;
+      this.world.healthbar.x += 30;
+      this.world.coinbar.x += 30;
+      this.world.bottlebar.x += 30;
+      this.reversed = false;
+    }
+    // } else {
+    //   this.world.audio_right.pause();
+    // }
   }
 
   moveLeft() {
-      if (this.world.keyboard.LEFT && this.x >= 120 + 5) {
-        this.world.ctx.translate(30, 0);
-        this.world.audio_left.play();
-        this.x -= 30;
-        this.world.healthbar.x -= 30;
-        this.reversed = true;
-      } else {
-        this.world.audio_left.pause();
-      }
+    if (this.world.keyboard.LEFT && this.x >= 120 + 5) {
+      this.world.ctx.translate(30, 0);
+      // this.world.audio_left.play();
+      this.x -= 30;
+      this.world.bottle.x -= 30;
+      this.world.healthbar.x -= 30;
+      this.world.coinbar.x -= 30;
+      this.world.bottlebar.x -= 30;
+      this.reversed = true;
+    }
+    // } else {
+    //   this.world.audio_left.pause();
+    // }
   }
 
   jump() {
-        if (this.world.keyboard.SPACE) {
-          this.y -= this.characterSpeed;
-          this.characterSpeed -= 10;
+    if (this.world.keyboard.SPACE) {
+      this.y -= this.characterSpeed;
+      this.characterSpeed -= 10;
 
-          if (this.y >= 170) {
-            this.world.keyboard.SPACE = false;
-            this.characterSpeed = 50;
-            this.currentImg = 0;
-          }
+      if (this.y >= 170) {
+        this.world.keyboard.SPACE = false;
+        this.characterSpeed = 50;
+        this.currentImg = 0;
+      }
+    }
+  }
+
+  checkCollisonWithEnemy() {
+    for (let i = 0; i < this.world.enemies.length; i++) {
+      const enemy = this.world.enemies[i];
+      if (
+        enemy.x <= this.x + this.width - 50 &&
+        enemy.x > this.x &&
+        this.y + this.height > enemy.y && !enemy.isDead
+      ) {
+        if(this.isJumping) {
+          enemy.animateDeath();
+          setTimeout(()=> {this.world.enemies.splice(i, 1);}, 500)
+  
         }
-
+        else {
+          this.isColliding = true;
+          this.health -= 1;
+          this.animateHurt();
+        }
+        
+      } else {
+        this.isColliding = false;
+      }
+    }
+  }
+  checkCollisonWithCoins() {
+    for (let i = 0; i < this.world.coins.length; i++) {
+      let coin = this.world.coins[i];
+      if (
+        coin.x <= this.x + this.width - 70 &&
+        coin.x > this.x &&
+        this.y < coin.y + coin.height - 70 &&
+        this.height + this.y > coin.y
+      ) {
+        this.world.coins.splice(i, 1);
+        this.coins++;
+      }
+    }
+  }
+  checkCollisonWithBottles() {
+    for (let i = 0; i < this.world.collectableBottles.length; i++) {
+      let bottle = this.world.collectableBottles[i];
+      if (
+        bottle.x <= this.x + this.width - 70 &&
+        bottle.x > this.x &&
+        this.y < bottle.y + bottle.height - 70 &&
+        this.height + this.y > bottle.y
+      ) {
+        this.world.collectableBottles.splice(i, 1);
+        this.bottles++;
+      }
+    }
   }
 }
