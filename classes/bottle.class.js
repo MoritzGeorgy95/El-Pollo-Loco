@@ -8,6 +8,14 @@ class Bottle extends MovableObject{
     "img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png",
     "img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png",
   ];
+  // SPLASH= [
+  //   "img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png",
+  //   "img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png",
+  //   "img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png",
+  //   "img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png",
+  //   "img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png",
+  //   "img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
+  // ];
   speed = 50;
   isThrown;
   currentImg = 0;
@@ -17,7 +25,8 @@ class Bottle extends MovableObject{
     super().loadImage("img/6_salsa_bottle/salsa_bottle.png");
     this.loadImages(this.IMAGES);
     this.throw();
-    this.aimate();
+    this.animate();
+    this.checkCollision();
     this.x = x;
     this.y = y;
     this.bottleSound.src= "audio/bottleThrow.mp3"
@@ -50,7 +59,7 @@ class Bottle extends MovableObject{
     }, 1000 / 25);
   }
 
-  aimate() {
+  animate() {
     setInterval(()=> {
         if(this.isThrown) {
             let i = this.currentImg % this.IMAGES.length;
@@ -60,4 +69,27 @@ class Bottle extends MovableObject{
         }
     },80)
   }
+
+  checkCollision() {
+    setInterval(()=> {
+      for (let i = 0; i < this.world.enemies.length; i++) {
+        const enemy= this.world.enemies[i];
+        if(this.isThrown && this.x + this.width > enemy.x && this.x < enemy.x + enemy.width && this.y + this.height > enemy.y) {
+          console.log('hit');
+          enemy.animateDeath();
+          setTimeout(()=> {this.world.enemies.splice(i, 1);}, 500)
+    }
+      }     
+    }, 100)
+  }
+
+
+  // animateSplash() {
+  //   setInterval(()=> {
+  //         let i = this.currentImg % this.SPLASH.length;
+  //         let path = this.SPLASH[i];
+  //         this.img = this.imgCache[path];
+  //         this.currentImg++;
+      
+  // },80)}
 }

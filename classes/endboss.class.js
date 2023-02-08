@@ -1,6 +1,7 @@
 class Endboss extends MovableObject {
   isDead = false;
   hurt= new Audio();
+  alert= new Audio();
   endbossActivated= false;
   bottle;
   health= 100;
@@ -10,7 +11,7 @@ class Endboss extends MovableObject {
     "img/4_enemie_boss_chicken/1_walk/G1.png",
     "img/4_enemie_boss_chicken/1_walk/G2.png",
     "img/4_enemie_boss_chicken/1_walk/G3.png",
-    "img/4_enemie_boss_chicken/1_walk/G4.png",
+        "img/4_enemie_boss_chicken/1_walk/G4.png",
   ];
 
   IMAGES_DEAD = [
@@ -44,31 +45,25 @@ class Endboss extends MovableObject {
     this.animateDead();
     this.bottle= bottle;
     this.hurt.src= "audio/endbossHurt.mp3";
+    this.alert.src= "audio/endbossAlert.mp3";
   }
 
- 
-//   animateDeath() {
-//     this.isDead = true;
-//     clearInterval(this.animation);
-//     this.height += 60;
-//     this.y += 20;
-//     let path = this.IMAGES_DEAD[0];
-//     this.img = this.imgCache[path];
-//   }
 
   walk() {
     setInterval(() => {
       if (this.world.character.x > 4350 || this.endbossActivated) {
         this.endbossActivated= true;
         this.x -= this.speed;
-        
-        
+        this.alert.play();
+        if (this.x <= 0) {
+           this.x= 4350; 
+        }
       } 
     }, 100);
   }
 
   checkState() {
-    setInterval(()=> {
+      setInterval(()=> {
         if(this.bottle.isThrown && this.bottle.x > this.x && this.bottle.x < this.x + this.width) {
             this.health -= 14;
             this.gettingHit= true;
@@ -79,7 +74,15 @@ class Endboss extends MovableObject {
             this.endbossActivated= false;
             this.gettingHit= false;
             this.isDead= true;
-            setTimeout(()=> {renderEndscreen();}, 2000);
+            this.world.win.play();
+            gameAudio.pause();
+            
+            setTimeout(()=> {
+              renderEndscreen();
+              for (let i = 1; i < 100; i++) {
+                window.clearInterval(i);
+              }
+              }, 3000);
         }
 
         else {
@@ -116,7 +119,6 @@ class Endboss extends MovableObject {
     animateDead() {
         setInterval(() => {
             if(this.isDead) {
-                this.world.win.play();
                 let i = this.currentImg % this.IMAGES_DEAD.length;
                 let path = this.IMAGES_DEAD[i];
                 this.img = this.imgCache[path];

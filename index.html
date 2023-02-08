@@ -22,8 +22,40 @@
     />
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body onload="init()">
-    <div id="gameContainer"></div>
+  <body>
+    <div id="gameContainer">
+      <canvas width="720" height="480" id="canvas"></canvas>
+      <div class="icon-container">
+        <i class="bi bi-volume-mute" onclick="playGameSound();"></i>
+        <i class="bi bi-arrows-fullscreen" onclick="enterFullScreen();"></i>
+        <i class="bi bi-controller" onclick="renderGameManual();"></i>
+      </div>
+      <div class="startscreen-container">
+        <button onclick="startGame();">Start</button>
+
+        <div class="manual-overlay">
+          <h1>Game manual</h1>
+          <div>
+            <i class="bi bi-arrow-left-square"></i>
+            <p>Move left</p>
+          </div>
+          <div>
+            <i class="bi bi-arrow-right-square"></i>
+            <p>Move right</p>
+          </div>
+          <div>
+            <i class="bi bi-distribute-vertical"></i>
+            <p>Jump (Spacebar)</p>
+          </div>
+          <div>
+            <p style="padding-left: 7px; font-weight: bold">E</p>
+            <p>Throw Bottle</p>
+          </div>
+        </div>
+        <p id="closeOverlay" onclick="closeGameManual();">X</p>
+      </div>
+      
+    </div>
     <script src="classes/world.class.js"></script>
     <script src="classes/statusbar.class.js"></script>
     <script src="classes/healthbar.class.js"></script>

@@ -1,81 +1,59 @@
 let gameContainer = document.getElementById("gameContainer");
 
-let canvas;
-let world;
+let canvas = document.getElementById("canvas");
 let keyboard = new Keyboard();
 let gameAudio = new Audio();
+world = new World(canvas, keyboard);
 gameAudio.src = "audio/gameloop.mp3";
 gameAudio.loop = true;
 let soundOn = false;
-let knock= new Audio;
-knock.src= "audio/knock.mp3";
+let knock = new Audio();
+knock.src = "audio/knock.mp3";
 
-function renderStartscreen() {
-  gameContainer.innerHTML = startScreenTemplate();
-}
-
-function renderGame() {
+function startGame() {
   knock.play();
-  gameContainer.innerHTML = gameTemplate();
-  canvas = document.getElementById("canvas");
-  world = new World(canvas, keyboard);
+  document.getElementsByClassName("startscreen-container")[0].style.display =
+    "none";
+  document.getElementsByClassName("bi-controller")[0].style.visibility =
+    "hidden";
+  addMobileControlPanel();
+  // world.enemies.forEach(enemy => {
+  //   enemy.incrementX();
+  // });
 }
 
 function renderEndscreen() {
   gameContainer.innerHTML = endScreenTemplate();
-
 }
 
-function startScreenTemplate() {
-  return /*html*/ `
-  <div class="startscreen-container">
-    <button onclick="renderGame();">Start</button>
-    <div class="icon-container">
-      <i class="bi bi-volume-mute" onclick="playGameSound();"></i>
-      <i class="bi bi-arrows-fullscreen" onclick="enterFullScreen();"></i>
-      <i class="bi bi-controller" onclick="renderGameManual();"></i>    
-    </div>
-    <div class="manual-overlay">
-      <h1>Game manual</h1>
-      <div>
-        <i class="bi bi-arrow-left-square"></i>
-        <p>Move left</p>
-      </div> 
-      <div>
-        <i class="bi bi-arrow-right-square"></i>
-        <p>Move right</p>
-      </div>
-      <div>
-        <i class="bi bi-distribute-vertical"></i>
-        <p>Jump (Spacebar)</p>
-      </div>
-      <div>
-        <p style="padding-left: 7px; font-weight: bold;">E</p>
-        <p>Throw Bottle</p>
-      </div>
-    </div>
-    <p id="closeOverlay" onclick="closeGameManual();">X</p>
-  </div>
+function addMobileControlPanel() {
+  gameContainer.append(addMobileControlPanelTemplate());
+  addEventListenersToPanel();
+}
+
+function addMobileControlPanelTemplate() {
+  let panel = document.createElement("div");
+  panel.classList.add("mobile-control-panel");
+  panel.innerHTML = /*html*/ `
+        <div>
+          <i class="bi bi-arrow-left-square" id="left"></i>
+          <i class="bi bi-arrow-right-square" id="right"></i>
+        </div>
+        <div>
+          <i class="bi bi-arrow-bar-up" id="jump"></i>
+          <i class="bi bi-fire" id="throw"></i>
+        </div>
   `;
+  return panel
 }
-
-function gameTemplate() {
-  return /*html*/ `<canvas width="720" height= "480" id="canvas"></canvas>`;
-}
-
 
 function endScreenTemplate() {
   return /*html*/ `
   <div class="endscreen-container">
     <img src="img/9_intro_outro_screens/game_over/game over!.png">
-    <button onclick="renderGame();">New Game</button>
+    <button onclick="window.location.reload();">New Game</button>
   </div>
-  `
-}
-
-function init() {
-  renderStartscreen();
- 
+  `;
 }
 
 function playGameSound() {
@@ -95,31 +73,27 @@ function playGameSound() {
 
 function renderGameManual() {
   knock.play();
-  document.getElementsByClassName('manual-overlay')[0].style.display= 'flex';
-  document.getElementById('closeOverlay').style.display= 'inline';
+  document.getElementsByClassName("manual-overlay")[0].style.display = "flex";
+  document.getElementById("closeOverlay").style.display = "inline";
 }
-
 
 function closeGameManual() {
   knock.play();
-  document.getElementsByClassName('manual-overlay')[0].style.display= 'none';
-  document.getElementById('closeOverlay').style.display= 'none';
-
+  document.getElementsByClassName("manual-overlay")[0].style.display = "none";
+  document.getElementById("closeOverlay").style.display = "none";
 }
 
 function enterFullScreen() {
   if (!fullscreen) {
     document.documentElement.requestFullscreen();
-    fullscreen= true;
-  }
-  else {
+    fullscreen = true;
+  } else {
     document.exitFullscreen();
-    fullscreen= false;
+    fullscreen = false;
   }
 }
 
-let fullscreen= false;
-
+let fullscreen = false;
 
 // in game event listener
 document.addEventListener("keydown", (event) => {
@@ -146,3 +120,42 @@ document.addEventListener("keyup", (event) => {
     keyboard.LEFT = false;
   }
 });
+
+function addEventListenersToPanel() {
+  const throW = document.getElementById("throw");
+  const jump = document.getElementById("jump");
+  const left = document.getElementById("left");
+  const right = document.getElementById("right");
+
+  left.addEventListener("mousedown", (event) => {
+    keyboard.LEFT = true;
+  });
+
+  left.addEventListener("mouseup", (event) => {
+    keyboard.LEFT = false;
+  });
+
+  right.addEventListener("mousedown", (event) => {
+    keyboard.RIGHT = true;
+  });
+
+  right.addEventListener("mouseup", (event) => {
+    keyboard.RIGHT = false;
+  });
+
+  jump.addEventListener("mousedown", (event) => {
+    keyboard.SPACE = true;
+  });
+
+  jump.addEventListener("mouseup", (event) => {
+    keyboard.SPACE = false;
+  });
+
+  throW.addEventListener("mousedown", (event) => {
+    keyboard.E = true;
+  });
+
+  throW.addEventListener("mouseup", (event) => {
+    keyboard.E = false;
+  });
+}

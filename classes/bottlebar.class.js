@@ -1,8 +1,8 @@
 class Bottlebar extends Statusbar {
-    x= 230;
+    x= 180;
     y= 0; 
-    width= 200;
-    height= 60;
+    width= 150;
+    height= 45;
     img; 
 
     images= [

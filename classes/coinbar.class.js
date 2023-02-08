@@ -1,8 +1,8 @@
 class Coinbar extends Statusbar{
-    x= 440;
+    x= 340;
     y= 0; 
-    width= 200;
-    height= 60;
+    width= 150;
+    height= 45;
     img;
 
     images= [

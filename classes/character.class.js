@@ -115,6 +115,7 @@ class Character extends MovableObject {
     if (this.health <= 0) {
       index = 0;
       this.isDead = true;
+      this.world.gameover.play();
     } else if (this.health >= 100) {
       index = 5;
     }
@@ -157,7 +158,12 @@ class Character extends MovableObject {
         let path = this.IMAGES_DEAD[i];
         this.img = this.imgCache[path];
         this.currentImg++;
-        setTimeout(()=> {renderEndscreen()}, 4000);
+        setTimeout(()=> {
+          renderEndscreen();
+          for (let i = 1; i < 100; i++) {
+            window.clearInterval(i);
+          }
+          }, 3000);
       }
 
   }
@@ -201,7 +207,7 @@ class Character extends MovableObject {
   }
 
   moveRight() {
-    if (this.world.keyboard.RIGHT && this.x + this.width <= 4900) {
+    if (this.world.keyboard.RIGHT && this.x + this.width <= 4900 && !this.isDead) {
       this.world.ctx.translate(-30, 0);
       // this.world.audio_right.play();
       this.x += 30;
@@ -217,7 +223,7 @@ class Character extends MovableObject {
   }
 
   moveLeft() {
-    if (this.world.keyboard.LEFT && this.x >= 120 + 5) {
+    if (this.world.keyboard.LEFT && this.x >= 120 + 5 && !this.isDead) {
       this.world.ctx.translate(30, 0);
       // this.world.audio_left.play();
       this.x -= 30;
@@ -258,7 +264,7 @@ class Character extends MovableObject {
           setTimeout(()=> {this.world.enemies.splice(i, 1);}, 500)
   
         }
-        else {
+        else if(!this.isJumping && !this.isDead) {
           this.isColliding = true;
           this.health -= 1;
           this.characterHurt.play();

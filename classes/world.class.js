@@ -5,6 +5,7 @@ class World {
   // audio_right = new Audio();
   enemies = [new Chicken(), new Chicken(), new Chicken(), new Chicken(), new Chicken(), new Chicken(), new Chicken()];
   win= new Audio();
+  gameover= new Audio();
   background = new Background(
     [
       "img/5_background/layers/air.png",
@@ -30,6 +31,7 @@ class World {
   endboss= new Endboss(this.bottle);  
   constructor(canvas, keyboard) {
     this.win.src= "audio/gamewinner.mp3";
+    this.gameover.src= "audio/gameover.mp3";
     this.canvas = canvas;
     // this.audio_left.src = "audio/walking.mp3";
     // this.audio_right.src = "audio/walking.mp3";
@@ -43,7 +45,9 @@ class World {
     this.character.world = this;
     this.bottle.world= this;
     this.endboss.world= this;
-    
+    // this.enemies.forEach((enemy)=>{
+    //   enemy.world= this;
+    // })
     }
 
   drawBackground(arr, y) {
