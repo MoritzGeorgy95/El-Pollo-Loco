@@ -4,7 +4,7 @@ body {
     flex-direction: column;
     justify-content: center;
     height: 100vh;
-    background-image: url('/img/5_background/background1.jpg');
+    background-image: url('https://moritz-georgy.developerakademie.net/Modul11/El-pollo-loco/img/5_background/background1.jpg');
     background-size: 100% 110%;
     background-repeat: no-repeat;
     font-family: 'Permanent Marker', cursive;    
@@ -33,7 +33,7 @@ h1 {
 }
 
 .startscreen-container {
-    background-image: url("/img/9_intro_outro_screens/start/startscreen_2.png");
+    background-image: url("https://moritz-georgy.developerakademie.net/Modul11/El-pollo-loco/img/9_intro_outro_screens/start/startscreen_2.png");
     background-size: 100% 100%;
     background-position: center;
     width: 100%;
@@ -44,7 +44,7 @@ h1 {
 }
 
 .endscreen-container {
-    background-image: url("/img/5_background/first_half_background.png");
+    background-image: url("https://moritz-georgy.developerakademie.net/Modul11/El-pollo-loco/img/5_background/first_half_background.png");
     background-size: 100% 100%;
     background-position: center;
     width: 720px;

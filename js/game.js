@@ -17,9 +17,9 @@ function startGame() {
   document.getElementsByClassName("bi-controller")[0].style.visibility =
     "hidden";
   addMobileControlPanel();
-  // world.enemies.forEach(enemy => {
-  //   enemy.incrementX();
-  // });
+  world.enemies.forEach(enemy => {
+    enemy.incrementX();
+  });
 }
 
 function renderEndscreen() {
