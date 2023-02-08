@@ -1,5 +1,6 @@
 class Endboss extends MovableObject {
   isDead = false;
+  hurt= new Audio();
   endbossActivated= false;
   bottle;
   health= 100;
@@ -42,6 +43,7 @@ class Endboss extends MovableObject {
     this.animateHurt();
     this.animateDead();
     this.bottle= bottle;
+    this.hurt.src= "audio/endbossHurt.mp3";
   }
 
  
@@ -70,6 +72,7 @@ class Endboss extends MovableObject {
         if(this.bottle.isThrown && this.bottle.x > this.x && this.bottle.x < this.x + this.width) {
             this.health -= 14;
             this.gettingHit= true;
+            this.hurt.play();
         }
 
         else if(this.health <= 0) {
@@ -113,6 +116,7 @@ class Endboss extends MovableObject {
     animateDead() {
         setInterval(() => {
             if(this.isDead) {
+                this.world.win.play();
                 let i = this.currentImg % this.IMAGES_DEAD.length;
                 let path = this.IMAGES_DEAD[i];
                 this.img = this.imgCache[path];

@@ -3,8 +3,8 @@ class World {
   clouds = new Cloud();
   // audio_left = new Audio();
   // audio_right = new Audio();
-  enemies = [new Chicken(), new Chicken(), new Chicken()];
-  
+  enemies = [new Chicken(), new Chicken(), new Chicken(), new Chicken(), new Chicken(), new Chicken(), new Chicken()];
+  win= new Audio();
   background = new Background(
     [
       "img/5_background/layers/air.png",
@@ -29,6 +29,7 @@ class World {
   keyboard;
   endboss= new Endboss(this.bottle);  
   constructor(canvas, keyboard) {
+    this.win.src= "audio/gamewinner.mp3";
     this.canvas = canvas;
     // this.audio_left.src = "audio/walking.mp3";
     // this.audio_right.src = "audio/walking.mp3";

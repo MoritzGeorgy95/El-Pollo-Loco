@@ -11,6 +11,7 @@ class Bottle extends MovableObject{
   speed = 50;
   isThrown;
   currentImg = 0;
+  bottleSound= new Audio();
 
   constructor(x, y) {
     super().loadImage("img/6_salsa_bottle/salsa_bottle.png");
@@ -19,6 +20,7 @@ class Bottle extends MovableObject{
     this.aimate();
     this.x = x;
     this.y = y;
+    this.bottleSound.src= "audio/bottleThrow.mp3"
   }
 
   throw() {
@@ -30,7 +32,7 @@ class Bottle extends MovableObject{
           this.y -= this.speed;
           this.speed -= 10;
           this.x += 25;
-          
+          this.bottleSound.play();
   
           if (this.y >= 420) {
             this.world.keyboard.E = false;

@@ -69,6 +69,9 @@ class Character extends MovableObject {
   isJumping;
   coins = 0;
   bottles = 0;
+  characterHurt= new Audio();
+  animationCounter= 0;
+  lastHit= 0;
 
   constructor() {
     super().loadImage("img/2_character_pepe/1_idle/idle/I-1.png");
@@ -81,6 +84,7 @@ class Character extends MovableObject {
     this.height = 250;
     this.y = 170;
     this.reversed = false;
+    this.characterHurt.src ="audio/characterHurt.mp3"
     this.setGameLoop();
     this.updateStatusBars();
     this.animateStanding();
@@ -94,7 +98,6 @@ class Character extends MovableObject {
       this.moveLeft();
       this.jump();
       this.collisionControl();
-
       this.animateDeath();
     }, 1000 / 15);
   }
@@ -104,8 +107,6 @@ class Character extends MovableObject {
       this.checkHealth();
       this.checkBottles();
       this.checkCoins();
-
-      this.animateDeath();
     }, 1000 / 60);
   }
 
@@ -150,13 +151,15 @@ class Character extends MovableObject {
   }
 
   animateDeath() {
-    if (this.isDead) {
-      let i = this.currentImg % this.IMAGES_DEAD.length;
-      let path = this.IMAGES_DEAD[i];
-      this.img = this.imgCache[path];
-      this.currentImg++;
-      setTimeout(()=> {renderEndscreen();}, 1000)
-    }
+
+      if (this.isDead) {
+        let i = this.currentImg % this.IMAGES_DEAD.length;
+        let path = this.IMAGES_DEAD[i];
+        this.img = this.imgCache[path];
+        this.currentImg++;
+        setTimeout(()=> {renderEndscreen()}, 4000);
+      }
+
   }
 
   animateHurt() {
@@ -170,6 +173,7 @@ class Character extends MovableObject {
     this.checkCollisonWithEnemy();
     this.checkCollisonWithCoins();
     this.checkCollisonWithBottles();
+    this.checkCollisonWithEndboss();
   }
 
   animateWalk() {
@@ -257,6 +261,7 @@ class Character extends MovableObject {
         else {
           this.isColliding = true;
           this.health -= 1;
+          this.characterHurt.play();
           this.animateHurt();
         }
         
@@ -265,6 +270,20 @@ class Character extends MovableObject {
       }
     }
   }
+  checkCollisonWithEndboss() {
+    if (
+      this.world.endboss.x <= this.x + this.width - 70 &&
+      this.world.endboss.x > this.x &&
+      this.y < this.world.endboss.y + this.world.endboss.height - 70 &&
+      this.height + this.y > this.world.endboss.y
+    ) {
+      this.isColliding = true;
+          this.health -= 10;
+          this.characterHurt.play();
+          this.animateHurt();
+    }
+  }
+
   checkCollisonWithCoins() {
     for (let i = 0; i < this.world.coins.length; i++) {
       let coin = this.world.coins[i];
@@ -274,6 +293,7 @@ class Character extends MovableObject {
         this.y < coin.y + coin.height - 70 &&
         this.height + this.y > coin.y
       ) {
+        coin.coinSound.play();
         this.world.coins.splice(i, 1);
         this.coins++;
       }
@@ -288,6 +308,7 @@ class Character extends MovableObject {
         this.y < bottle.y + bottle.height - 70 &&
         this.height + this.y > bottle.y
       ) {
+        bottle.bottleSound.play();
         this.world.collectableBottles.splice(i, 1);
         this.bottles++;
       }
