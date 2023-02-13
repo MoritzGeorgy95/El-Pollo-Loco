@@ -98,7 +98,7 @@ h1 {
     background-color: #c5621f;;
 }
 
-.icon-container {
+.icon-container { 
     display: flex;
     position: absolute;
     top: 10px;
@@ -178,10 +178,10 @@ h1 {
 
 #closeOverlay:hover {
     transform: scale(1.2);
-}
+} 
 
 .mobile-control-panel {
-    display: flex;
+    display: none;
     width: 100%;
     position: absolute;
     bottom: 15px;
@@ -189,20 +189,15 @@ h1 {
 }
 
 .mobile-control-panel div > i {
-    padding: 7px;
+    padding: 7px 30px 7px 30px;
     border-radius: 5px;
     background-color: #FFD101;
 }
 
-.d-none {
+/* .d-none {
     display: none;
-}
+} */
 
-@media screen and (min-width: 721px) {
-    .mobile-control-panel {
-        display: none !important;
-    }
-}
 
 @media screen and (max-width: 720px) {
     #gameContainer {
@@ -218,14 +213,43 @@ h1 {
     }
 
 }
+/* 
+@media screen and (min-width: 721px) {
+    .mobile-control-panel {
+        display: none;
+    }
+} */
+
+/* @media screen and (orientation:landscape) { 
+    .mobile-control-panel {
+        display: flex;
+    }
+ } */
+
 
 @media screen and (max-height: 480px) {
     #gameContainer {
         height: 100%;
+        width: 100%;
     }
 
     canvas {
         height: 100%;
         border-radius: 0;
+        width: 100%;
+    }
+
+    .endscreen-container {
+        width: 100%;
+        border-radius: 0;
+        height: 100%;
+    }
+
+    .startscreen-container {
+        border-radius: 0;
+    }
+
+    .mobile-control-panel {
+        display: flex;
     }
 }

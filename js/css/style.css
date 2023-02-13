@@ -1,0 +1,252 @@
+body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    background-image: url('https://moritz-georgy.developerakademie.net/Modul11/El-pollo-loco/img/5_background/background1.jpg');
+    background-size: 100% 110%;
+    background-repeat: no-repeat;
+    font-family: 'Permanent Marker', cursive;    
+    margin: 0;
+}
+
+canvas {
+    border-radius: 25px;
+    /* display: none; */
+    display: block;
+}
+
+h1 {
+    color: white;
+    font-size: 3rem;
+    color:#FFD101;   
+    text-align: center;
+    margin-top: 0;
+}
+
+#gameContainer {
+    position: relative;
+    width: 720px;
+    height: 480px;
+}
+
+.startscreen-container {
+    background-image: url("https://moritz-georgy.developerakademie.net/Modul11/El-pollo-loco/img/9_intro_outro_screens/start/startscreen_2.png");
+    background-size: 100% 100%;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    border-radius: 25px;
+}
+
+.endscreen-container {
+    background-image: url("https://moritz-georgy.developerakademie.net/Modul11/El-pollo-loco/img/5_background/first_half_background.png");
+    background-size: 100% 100%;
+    background-position: center;
+    width: 720px;
+    height: 480px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.endscreen-container img {
+    width: 130%;
+    height: 130%;
+}
+
+.endscreen-container button {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 70px;
+    padding: 10px 40px 10px 40px;
+    border-radius: 15px;
+    border: 3px solid black;
+    color: #FFD101;
+    font-size: 1.5rem;
+    background: #994408;
+    cursor: pointer;
+    transition: all 200ms ease-in-out;
+    font-family: 'Permanent Marker', cursive;
+}
+
+.startscreen-container button {
+    position: absolute;
+    left: 30px;
+    top: 20px;
+    padding: 10px 40px 10px 40px;
+    border-radius: 15px;
+    border: 3px solid black;
+    color: #FFD101;
+    font-size: 1.5rem;
+    background: #994408;
+    cursor: pointer;
+    transition: all 200ms ease-in-out;
+    font-family: 'Permanent Marker', cursive;
+
+}
+
+.startscreen-container button:hover {
+    background-color: #c5621f;;
+}
+
+.icon-container { 
+    display: flex;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    width: 120px;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10000000;
+}
+
+.icon-container i:first-of-type {
+    font-size: 1.9rem;
+    cursor: pointer;
+    transition: all 200ms ease-in-out;
+}
+
+.icon-container i:hover {
+    transform: scale(1.2);
+} 
+
+.icon-container i:nth-of-type(2) {
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 200ms ease-in-out;
+}
+
+.icon-container i:last-of-type {
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+
+.manual-overlay {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 85%);
+    z-index: 1000;
+    border-radius: 25px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.manual-overlay div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 40%;
+    margin-top: 1rem;
+}
+
+.manual-overlay div > p {
+    color: white;
+    margin: 0;
+    margin-top: 7px;
+    font-size: 1.5rem;
+}
+
+.manual-overlay i {
+    color: white;
+    font-size: 2rem;
+}
+
+#closeOverlay {
+    display: none;
+    margin: 0;
+    position: absolute;
+    z-index: 10000000;
+    right: 30px;
+    top: 30px;
+    font-size: 1.5rem;
+    color: white;
+    transition: all 200ms ease-in-out;
+    cursor: pointer;
+}
+
+#closeOverlay:hover {
+    transform: scale(1.2);
+} 
+
+.mobile-control-panel {
+    display: none;
+    width: 100%;
+    position: absolute;
+    bottom: 15px;
+    justify-content: space-around;
+}
+
+.mobile-control-panel div > i {
+    padding: 7px 30px 7px 30px;
+    border-radius: 5px;
+    background-color: #FFD101;
+}
+
+h2 {
+    display: none; 
+    color: white;
+}
+ 
+
+
+@media screen and (max-width: 720px) {
+    #gameContainer {
+        width: 100%;
+    }
+
+    canvas {
+        width: 100%;
+    }
+
+    .mobile-control-panel { 
+        display: block;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    #gameContainer {
+        display: none;
+    } 
+
+    h2 {
+        display: block;
+    }
+}
+
+@media screen and (max-height: 480px) {
+    #gameContainer {
+        height: 100%;
+        width: 100%;
+    }
+
+    canvas {
+        height: 100%;
+        border-radius: 0;
+        width: 100%;
+    }
+
+    .endscreen-container {
+        width: 100%;
+        border-radius: 0;
+        height: 100%;
+    }
+
+    .startscreen-container {
+        border-radius: 0;
+    }
+
+    .mobile-control-panel {
+        display: flex;
+    }
+}
