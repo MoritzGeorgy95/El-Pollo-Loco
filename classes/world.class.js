@@ -220,7 +220,7 @@ class World {
      this.drawCharacterRight();
     }
 
-    requestAnimationFrame(() => {
+    this.animationFrame= requestAnimationFrame(() => {
       this.drawGame();
     });
   }

@@ -9,14 +9,7 @@ class Bottle extends MovableObject {
     "img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png",
     "img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png",
   ];
-  // SPLASH= [
-  //   "img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png",
-  //   "img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png",
-  //   "img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png",
-  //   "img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png",
-  //   "img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png",
-  //   "img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
-  // ];
+  
   speed = 50;
   isThrown;
   currentImg = 0;
@@ -107,7 +100,9 @@ class Bottle extends MovableObject {
     this.y -= this.speed;
     this.speed -= 10;
     this.x += 25;
-    this.bottleSound.play();
+    if (soundOn) {
+      this.bottleSound.play(); 
+    }
   }
 
   handleFlightReversed() {
@@ -116,8 +111,9 @@ class Bottle extends MovableObject {
     this.y -= this.speed;
     this.speed -= 10;
     this.x -= 60;
-    this.bottleSound.play();
-    console.log("I work");
+    if (soundOn) {
+      this.bottleSound.play();      
+    }
   }
 
   handleDrop() {
@@ -128,12 +124,5 @@ class Bottle extends MovableObject {
     this.y = this.world.character.y + 100;
     this.world.character.bottles--;
   }
-  // animateSplash() {
-  //   setInterval(()=> {
-  //         let i = this.currentImg % this.SPLASH.length;
-  //         let path = this.SPLASH[i];
-  //         this.img = this.imgCache[path];
-  //         this.currentImg++;
-
-  // },80)}
+  
 }

@@ -40,9 +40,38 @@ function startGame() {
   });
 }
 
+//start new game
+function newGame() {
+  resetCanvas();
+  world= new World(canvas, keyboard);
+  document.getElementById('endscreen').style.display= "none";
+  document.getElementsByClassName('icon-container')[0].style.display= "flex";
+  world.enemies.forEach(enemy => {
+    enemy.incrementX();
+  });
+  if (fullscreen) {
+    canvas.classList.add('fullscreen');
+  }
+}
+
+//reset canvas when new game is started
+function resetCanvas() {
+  canvas.remove();
+  canvas = document.createElement('canvas');
+  canvas.width = 720;
+  canvas.height = 480;
+  gameContainer.insertBefore(canvas, gameContainer.firstChild);
+}
+
 //render Endscreen when gameover
 function renderEndscreen() {
-  gameContainer.innerHTML = endScreenTemplate();
+  document.getElementById('endscreen').style.display= "flex";
+  delete world;
+  canvas.style.display= "none";
+  document.getElementsByClassName('icon-container')[0].style.display= "none";
+  if (fullscreen) {
+    document.getElementById('endscreen').classList.add('fullscreen');
+  }
 }
 
 //inject mobile control panel into DOM for mobile gaming
@@ -81,14 +110,14 @@ function addMobileControlPanelTemplate() {
   return panel
 }
 
-function endScreenTemplate() {
-  return /*html*/ `
-  <div class="endscreen-container">
-    <img src="img/9_intro_outro_screens/game_over/game over!.png">
-    <button onclick="window.location.reload();">New Game</button>
-  </div>
-  `;
-}
+// function endScreenTemplate() {
+//   return /*html*/ `
+//   <div class="endscreen-container">
+//     <img src="img/9_intro_outro_screens/game_over/game over!.png">
+//     <button onclick="window.location.reload();">New Game</button>
+//   </div>
+//   `;
+// }
 
 
 //play game sound on click and change icon
@@ -109,12 +138,21 @@ function playGameSound() {
 
 //make browserwindwo fullscreen
 function enterFullScreen() {
-  if (!fullscreen) {
-    document.documentElement.requestFullscreen();
+  if (!fullscreen && window.innerHeight > 480) {
+    gameContainer.requestFullscreen();
     fullscreen = true;
-  } else {
+    canvas.classList.add('fullscreen');
+  } 
+  
+  else if (!fullscreen && window.innerHeight < 480){
+    document.documentElement.requestFullscreen();
+    fullscreen= true;
+  }
+  
+  else {
     document.exitFullscreen();
     fullscreen = false;
+    canvas.classList.remove('fullscreen');  
   }
 }
 
@@ -146,7 +184,6 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
- 
 //event listeners for touch panel on mobile device
 function addEventListenersToPanel() {
   const throW = document.getElementById("throw");

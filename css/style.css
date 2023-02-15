@@ -23,7 +23,6 @@ h1 {
     color:#FFD101;   
     text-align: center;
     margin-top: 0;
-    /* display: none; */
 }
 
 #gameContainer {
@@ -55,6 +54,7 @@ h1 {
     align-items: center;
     overflow: hidden;
     position: relative;
+    display: none;
 }
 
 .endscreen-container img {
@@ -194,10 +194,16 @@ h1 {
     background-color: #FFD101;
 }
 
-/* .d-none {
-    display: none;
-} */
-
+h2 {
+    display: none; 
+    color: white;
+    text-align: center;
+}
+ 
+.fullscreen {
+    width: 100%;
+    height: 100%;
+}
 
 @media screen and (max-width: 720px) {
     #gameContainer {
@@ -208,24 +214,20 @@ h1 {
         width: 100%;
     }
 
-    .mobile-control-panel {
-        display: flex;
+    .mobile-control-panel { 
+        display: block;
     }
-
 }
-/* 
-@media screen and (min-width: 721px) {
-    .mobile-control-panel {
+
+@media screen and (max-width: 650px) {
+    #gameContainer {
         display: none;
-    }
-} */
+    } 
 
-/* @media screen and (orientation:landscape) { 
-    .mobile-control-panel {
-        display: flex;
+    h2 {
+        display: block;
     }
- } */
-
+}
 
 @media screen and (max-height: 480px) {
     #gameContainer {

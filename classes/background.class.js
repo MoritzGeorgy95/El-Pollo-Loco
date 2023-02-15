@@ -1,6 +1,6 @@
 class Background {
 
-    x= 0;
+    x= 0; 
     y= 0;
     width= 720;
     height= 480;

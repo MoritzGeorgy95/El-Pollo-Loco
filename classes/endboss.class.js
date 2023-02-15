@@ -54,7 +54,9 @@ class Endboss extends MovableObject {
       if (this.world.character.x > 4350 || this.endbossActivated) {
         this.endbossActivated= true;
         this.x -= this.speed;
-        this.alert.play();
+        if (soundOn) {
+          this.alert.play();          
+        }
         if (this.x <= 0) {
            this.x= 4350; 
         }
@@ -67,15 +69,20 @@ class Endboss extends MovableObject {
         if(this.bottle.isThrown && this.bottle.x > this.x && this.bottle.x < this.x + this.width) {
             this.health -= 14;
             this.gettingHit= true;
-            this.hurt.play();
+            if (soundOn) {
+              this.hurt.play();              
+            }
         }
 
         else if(this.health <= 0) {
             this.endbossActivated= false;
             this.gettingHit= false;
             this.isDead= true;
-            this.world.win.play();
-            gameAudio.pause();
+            if (soundOn) {
+              this.world.win.play();
+              gameAudio.pause();
+            }
+           
             
             setTimeout(()=> {
               renderEndscreen();

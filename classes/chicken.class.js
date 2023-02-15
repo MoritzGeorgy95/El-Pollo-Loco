@@ -42,7 +42,9 @@ class Chicken extends MovableObject {
         clearInterval(this.animation);
         clearInterval(this.incrementInterval);
         this.height += 60;
-        this.hurt.play();
+        if (soundOn) {
+            this.hurt.play();            
+        }
         let path = this.IMAGES_DEAD[0];
         this.img = this.imgCache[path];
     }
