@@ -1,2 +1,2 @@
 # El Pollo Loco
- A little jump & run game practicing Javascript Object Orientation
+ A little jump & run game that is Object Oriented with recursive animation frame 
