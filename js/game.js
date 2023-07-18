@@ -110,16 +110,6 @@ function addMobileControlPanelTemplate() {
   return panel
 }
 
-// function endScreenTemplate() {
-//   return /*html*/ `
-//   <div class="endscreen-container">
-//     <img src="img/9_intro_outro_screens/game_over/game over!.png">
-//     <button onclick="window.location.reload();">New Game</button>
-//   </div>
-//   `;
-// }
-
-
 //play game sound on click and change icon
 function playGameSound() {
   let icon = document.getElementsByTagName("i")[0];
